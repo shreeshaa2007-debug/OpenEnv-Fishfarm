@@ -1,0 +1,24 @@
+name: fish_farm_env
+version: 1.0
+
+environment:
+  api:
+    base_url: http://localhost:8000
+
+state_space:
+  oxygen: list[float]
+  temperature: float
+  energy_used: float
+  time: int
+
+action_space:
+  type: discrete
+  values: ["increase", "decrease", "none"]
+
+tasks:
+  - name: easy
+    grader: tasks.easy.grade
+  - name: medium
+    grader: tasks.medium.grade
+  - name: hard
+    grader: tasks.hard.grade
