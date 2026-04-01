@@ -1,5 +1,10 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+import sys
+import os
+
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 from env.environment import FishFarmEnv
 
 app = FastAPI()
