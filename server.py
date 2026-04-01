@@ -1,8 +1,11 @@
 import sys
 import os
 
-# ✅ Force Python to find project folders
+
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+from fastapi import FastAPI
+from env.environment import FishFarmEnv
 
 from fastapi import FastAPI
 from env.environment import FishFarmEnv
