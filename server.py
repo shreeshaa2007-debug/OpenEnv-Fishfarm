@@ -1,16 +1,14 @@
 import sys
 import os
 
+# Add current directory to path
+sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+# Import manually
+from importlib import import_module
 
-from fastapi import FastAPI
-from env.environment import FishFarmEnv
+FishFarmEnv = import_module("env.environment").FishFarmEnv
 
-from fastapi import FastAPI
-from env.environment import FishFarmEnv
-
-app = FastAPI()
 
 env = FishFarmEnv()
 
