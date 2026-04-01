@@ -25,11 +25,24 @@ def reset():
     return {"state": state}
 
 
+from pydantic import BaseModel
+
+class ActionRequest(BaseModel):
+    actions: list
+
+
 @app.post("/step")
-def step(actions: list):
-    state, reward, done, _ = env.step(actions)
-    return {
-        "state": state,
-        "reward": reward,
-        "done": done
-    }
+def step(req: ActionRequest):
+    try:
+        print("Received:", req.actions)
+
+        state, reward, done, _ = env.step(req.actions)
+
+        return {
+            "state": state,
+            "reward": reward,
+            "done": done
+        }
+
+    except Exception as e:
+        return {"error": str(e)}
