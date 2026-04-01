@@ -1,17 +1,18 @@
 import sys
 import os
-
-# Add current directory to path
-sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
-
-# Import manually
 from importlib import import_module
 
+from fastapi import FastAPI   
+
+# Fix path
+sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
+
+# Load environment
 FishFarmEnv = import_module("env.environment").FishFarmEnv
 
+app = FastAPI()
 
 env = FishFarmEnv()
-
 
 @app.get("/")
 def home():
