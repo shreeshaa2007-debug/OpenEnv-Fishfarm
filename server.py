@@ -1,7 +1,7 @@
 import sys
 import os
-from importlib import import_module
-
+sys.path.append(os.path.abspath(os.path.dirname(__file__)))
+from environment import FishFarmEnv
 from fastapi import FastAPI   
 
 # Fix path
