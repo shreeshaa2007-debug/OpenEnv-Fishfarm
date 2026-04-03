@@ -1,48 +1,27 @@
-import sys
-import os
-sys.path.append(os.path.abspath(os.path.dirname(__file__)))
-from environment import FishFarmEnv
-from fastapi import FastAPI   
-
-# Fix path
-sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
-
-# Load environment
-FishFarmEnv = import_module("env.environment").FishFarmEnv
+from fastapi import FastAPI
+from pydantic import BaseModel
+from typing import List
+from env.environment import FishFarmEnv
 
 app = FastAPI()
+env = FishFarmEnv(ponds=2)
 
-env = FishFarmEnv()
+class ActionRequest(BaseModel):
+    actions: List[str]
 
 @app.get("/")
-def home():
-    return {"message": "Fish Farm API Running 🚀"}
-
+def root():
+    return {"status": "ok"}
 
 @app.post("/reset")
 def reset():
-    state = env.reset()
-    return {"state": state}
-
-
-from pydantic import BaseModel
-
-class ActionRequest(BaseModel):
-    actions: list
-
+    return {"state": env.reset()}
 
 @app.post("/step")
 def step(req: ActionRequest):
-    try:
-        print("Received:", req.actions)
+    state, reward, done, _ = env.step(req.actions)
+    return {"state": state, "reward": reward, "done": done}
 
-        state, reward, done, _ = env.step(req.actions)
-
-        return {
-            "state": state,
-            "reward": reward,
-            "done": done
-        }
-
-    except Exception as e:
-        return {"error": str(e)}
+@app.get("/state")
+def state():
+    return {"state": env.state()}
